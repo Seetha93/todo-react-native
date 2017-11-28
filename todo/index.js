@@ -10,35 +10,42 @@ class TodoApp extends Component {
 		tasks:  [],
 	}
 
-	addTask = task => {
-		console.log(task);
-		let tasks = this.state.tasks.concat([{'title': task}]);
+	addTask = () => {
+		let tasks = this.state.tasks.concat([{'title': this.state.text}]);
 
-		  this.setState({
-		      tasks: tasks
-		  })
+		this.setState({
+			tasks: tasks,
+			text: 'Add Task'
+		})
 
-		  console.log(tasks);
-		// var temp = (this.state.tasks && this.state.tasks.length > 0) ? this.state.tasks : []
-		// temp.push(task)
-		// this.setState({ tasks : temp, text: '' })
 	}
 
+	deleteTask = index => {
+		let temp = this.state.tasks.splice(index, 1);
+		let tasks = this.state.tasks
+		this.setState({ tasks: tasks })
+	}
 
 	render() {
-		const taskList = this.state.tasks.map((data) => {
-		    return (
-		      <View><Text>{data.title}</Text></View>
-		    )
-		  });
 		return (
 			<View style={[styles.container]}>
-				{taskList}
+				<FlatList style={styles.list} data={this.state.tasks} renderItem={({ item, index }) =>
+					<View>
+		            	<View style={styles.listItemCont}>
+		                	<Text style={styles.listItem}>
+		                  		{ item.title }
+		                	</Text>
+		                	<Button title="X" onPress={() => this.deleteTask(index)} />
+		              </View>
+		              <View style={styles.hr} />
+		            </View>}
+		        />
 				
 				<TextInput
 		        	style={styles.textInput}
-	          		onSubmitEditing={this.addTask}
-	          		value={this.state.text}
+		        	onChangeText={(text) => this.setState({text})}
+		        	onSubmitEditing={this.addTask}
+        			value={this.state.text}
 	          		placeholder="Add Tasks"
 	          		returnKeyType="done"
 	          		returnKeyLabel="done"
