@@ -15,7 +15,7 @@ class TodoApp extends Component {
 
 		this.setState({
 			tasks: tasks,
-			text: 'Add Task'
+			text: ''
 		})
 
 	}
